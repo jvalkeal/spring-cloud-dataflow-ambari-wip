@@ -13,6 +13,7 @@ apply plugin: 'rpm'
 
 buildDeb.enabled = false
 //buildRpm.enabled = false
+group = 'foo'
 
 ospackage {
 	version = '1.0'
