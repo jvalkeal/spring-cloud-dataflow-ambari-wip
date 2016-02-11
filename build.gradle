@@ -33,25 +33,28 @@ ospackage {
 
 }
 
-task phd30Rpm(type: Rpm) {
-	packageName = 'scdf-plugin-phd'
-	from('src/main/resources/services') {
-		into '/var/lib/ambari-server/resources/stacks/PHD/3.0/services'
-	}
-}
+//task phd30Rpm(type: Rpm) {
+//	packageName = 'scdf-plugin-phd'
+//	from('src/main/resources/services') {
+//		into '/var/lib/ambari-server/resources/stacks/PHD/3.0/services'
+//	}
+//}
 
 task hdp22Rpm(type: Rpm) {
 	packageName = 'scdf-plugin-hdp'
+	classifier = 'rpm'
 	from('src/main/resources/services') {
 		into '/var/lib/ambari-server/resources/stacks/HDP/2.2/services'
 	}
 }
 
 task dist {
-	dependsOn phd30Rpm, hdp22Rpm
+//	dependsOn phd30Rpm, hdp22Rpm
+	dependsOn hdp22Rpm
 }
 
 artifacts {
-	archives phd30Rpm
+//	archives phd30Rpm
 	archives hdp22Rpm
 }
+
