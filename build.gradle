@@ -51,3 +51,7 @@ task dist {
 	dependsOn phd30Rpm, hdp22Rpm
 }
 
+artifacts {
+	archives phd30Rpm
+	archives hdp22Rpm
+}
