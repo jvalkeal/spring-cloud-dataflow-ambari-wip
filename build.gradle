@@ -43,6 +43,7 @@ ospackage {
 task hdp22Rpm(type: Rpm) {
 	packageName = 'scdf-plugin-hdp'
 	classifier = 'rpm'
+	group = 'foo'
 	from('src/main/resources/services') {
 		into '/var/lib/ambari-server/resources/stacks/HDP/2.2/services'
 	}
