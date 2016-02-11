@@ -12,7 +12,7 @@ apply plugin: 'os-package'
 apply plugin: 'rpm'
 
 buildDeb.enabled = false
-buildRpm.enabled = false
+//buildRpm.enabled = false
 
 ospackage {
 	version = '1.0'
@@ -40,7 +40,17 @@ ospackage {
 //	}
 //}
 
-task hdp22Rpm(type: Rpm) {
+//task hdp22Rpm(type: Rpm) {
+//	packageName = 'scdf-plugin-hdp'
+//	classifier = 'rpm'
+//	group = 'foo'
+//	version = '1.0'
+//	from('src/main/resources/services') {
+//		into '/var/lib/ambari-server/resources/stacks/HDP/2.2/services'
+//	}
+//}
+
+buildRpm {
 	packageName = 'scdf-plugin-hdp'
 	classifier = 'rpm'
 	group = 'foo'
@@ -52,11 +62,13 @@ task hdp22Rpm(type: Rpm) {
 
 task dist {
 //	dependsOn phd30Rpm, hdp22Rpm
-	dependsOn hdp22Rpm
+//	dependsOn hdp22Rpm
+	dependsOn buildRpm
 }
 
 artifacts {
 //	archives phd30Rpm
-	archives hdp22Rpm
+//	archives hdp22Rpm
+	archives buildRpm
 }
 
