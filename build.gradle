@@ -14,6 +14,8 @@ apply plugin: 'rpm'
 buildDeb.enabled = false
 //buildRpm.enabled = false
 group = 'foo'
+version = '1.0'
+//name = 'bar'
 
 ospackage {
 	version = '1.0'
@@ -53,7 +55,7 @@ ospackage {
 
 buildRpm {
 	packageName = 'scdf-plugin-hdp'
-	classifier = 'rpm'
+//	classifier = 'rpm'
 	group = 'foo'
 	version = '1.0'
 	from('src/main/resources/services') {
@@ -73,3 +75,6 @@ artifacts {
 	archives buildRpm
 }
 
+println project.name
+println project.group
+println project.version
