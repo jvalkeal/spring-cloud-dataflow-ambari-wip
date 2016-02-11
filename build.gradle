@@ -29,6 +29,9 @@ configure(subprojects) { subproject ->
 		postInstall file("${rootProject.projectDir}/src/main/package/rpm/postinstall.sh")
 		preUninstall file("${rootProject.projectDir}/src/main/package/rpm/preremove.sh")
 	}
+	artifacts {
+		archives buildRpm
+	}
 }
 
 project('hdp') {
