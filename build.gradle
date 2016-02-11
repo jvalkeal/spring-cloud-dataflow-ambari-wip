@@ -8,68 +8,44 @@ buildscript {
 	}
 }
 
-apply plugin: 'os-package'
-apply plugin: 'rpm'
-
-buildDeb.enabled = false
-//buildRpm.enabled = false
 group = 'scdf'
 
-ospackage {
-//	version = '1.0'
-	release = 1
-	arch = NOARCH
-	os = LINUX
-	user 'root'
-	permissionGroup = 'root'
-	packageDescription = 'Spring Cloud Dataflow plugin contains Ambari\'s stack definition for Spring Cloud Dataflow service.'
-	packageGroup = 'Applications/Databases'
-	license = 'Apache License v2.0'
+configure(subprojects) { subproject ->
+	apply plugin: 'os-package'
+	apply plugin: 'rpm'
+	buildDeb.enabled = false
 
-	requires('ambari-server', '1.7', GREATER | EQUAL)
-	requires('python', '2.6', GREATER | EQUAL)
-
-	postInstall file('src/main/package/rpm/postinstall.sh')
-	preUninstall file('src/main/package/rpm/preremove.sh')
-
-}
-
-//task phd30Rpm(type: Rpm) {
-//	packageName = 'scdf-plugin-phd'
-//	from('src/main/resources/services') {
-//		into '/var/lib/ambari-server/resources/stacks/PHD/3.0/services'
-//	}
-//}
-
-//task hdp22Rpm(type: Rpm) {
-//	packageName = 'scdf-plugin-hdp'
-//	classifier = 'rpm'
-//	group = 'foo'
-//	version = '1.0'
-//	from('src/main/resources/services') {
-//		into '/var/lib/ambari-server/resources/stacks/HDP/2.2/services'
-//	}
-//}
-
-buildRpm {
-	packageName = 'scdf-plugin-hdp'
-	from('src/main/resources/services') {
-		into '/var/lib/ambari-server/resources/stacks/HDP/2.2/services'
+	ospackage {
+		release = 1
+		arch = NOARCH
+		os = LINUX
+		user 'root'
+		permissionGroup = 'root'
+		packageDescription = 'Spring Cloud Dataflow plugin contains Ambari\'s stack definition for Spring Cloud Dataflow service.'
+		packageGroup = 'Applications/Databases'
+		license = 'Apache License v2.0'
+		requires('ambari-server', '1.7', GREATER | EQUAL)
+		requires('python', '2.6', GREATER | EQUAL)
+		postInstall file("${rootProject.projectDir}/src/main/package/rpm/postinstall.sh")
+		preUninstall file("${rootProject.projectDir}/src/main/package/rpm/preremove.sh")
 	}
 }
 
-task dist {
-//	dependsOn phd30Rpm, hdp22Rpm
-//	dependsOn hdp22Rpm
-	dependsOn buildRpm
+project('hdp') {
+	buildRpm {
+		packageName = 'scdf-plugin-hdp'
+		from("${rootProject.projectDir}/src/main/resources/services") {
+			into '/var/lib/ambari-server/resources/stacks/HDP/2.2/services'
+		}
+	}
 }
 
-artifacts {
-//	archives phd30Rpm
-//	archives hdp22Rpm
-	archives buildRpm
+project('phd') {
+	buildRpm {
+		packageName = 'scdf-plugin-phd'
+		from("${rootProject.projectDir}/src/main/resources/services") {
+			into '/var/lib/ambari-server/resources/stacks/PHD/3.0/services'
+		}
+	}
 }
 
-println project.name
-println project.group
-println project.version
