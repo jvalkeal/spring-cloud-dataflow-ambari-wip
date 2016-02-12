@@ -37,7 +37,7 @@ configure(subprojects) { subproject ->
 		publications {
 			archives(IvyPublication) {
 				descriptor.withXml {
-					asNode().info[0].attributes().put('e:architecture', 'amd64')
+					asNode().info[0].attributes().put('architecture', 'amd64')
 				}
 			}
 		}
