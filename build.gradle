@@ -10,6 +10,7 @@ buildscript {
 
 configure(allprojects) {
 	group = 'scdf'
+	ext.classifier = '1.noarch'
 }
 
 configure(subprojects) { subproject ->
@@ -37,7 +38,6 @@ configure(subprojects) { subproject ->
 }
 
 project('hdp') {
-	classifier = `1`
 	buildRpm {
 		packageName = 'scdf-plugin-hdp'
 		from("${rootProject.projectDir}/src/main/resources/services") {
@@ -47,7 +47,6 @@ project('hdp') {
 }
 
 project('phd') {
-	classifier = `1`
 	buildRpm {
 		packageName = 'scdf-plugin-phd'
 		from("${rootProject.projectDir}/src/main/resources/services") {
