@@ -10,12 +10,12 @@ buildscript {
 
 configure(allprojects) {
 	group = 'scdf'
-	ext.classifier = '1.noarch'
 }
 
 configure(subprojects) { subproject ->
 	apply plugin: 'os-package'
 	apply plugin: 'rpm'
+	apply plugin: 'ivy-publish'
 	buildDeb.enabled = false
 
 	ospackage {
@@ -32,6 +32,17 @@ configure(subprojects) { subproject ->
 		postInstall file("${rootProject.projectDir}/src/main/package/rpm/postinstall.sh")
 		preUninstall file("${rootProject.projectDir}/src/main/package/rpm/preremove.sh")
 	}
+
+	publishing {
+		publications {
+			archive(IvyPublication) {
+				descriptor.withXml {
+					asNode().info[0].attributes().put('e:architecture', 'amd64')
+				}
+			}
+		}
+	}
+
 	artifacts {
 		archives buildRpm
 	}
