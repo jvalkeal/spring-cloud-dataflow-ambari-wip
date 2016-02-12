@@ -8,7 +8,9 @@ buildscript {
 	}
 }
 
-group = 'scdf'
+configure(allprojects) {
+	group = 'scdf'
+}
 
 configure(subprojects) { subproject ->
 	apply plugin: 'os-package'
