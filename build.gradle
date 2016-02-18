@@ -38,6 +38,9 @@ configure(subprojects) { subproject ->
 }
 
 project('hdp') {
+	println 'XXX1'
+	println tasks.findByPath("artifactoryPublish")
+	println 'XXX2'
 	buildRpm {
 		packageName = 'scdf-plugin-hdp'
 		from("${rootProject.projectDir}/src/main/resources/services") {
