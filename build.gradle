@@ -5,7 +5,7 @@ buildscript {
 
 	dependencies {
 		classpath 'com.netflix.nebula:gradle-ospackage-plugin:2.2.6'
-		classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.0.0"
+//		classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.0.0"
 	}
 }
 
@@ -16,7 +16,7 @@ configure(allprojects) {
 configure(subprojects) { subproject ->
 	apply plugin: 'os-package'
 	apply plugin: 'rpm'
-	apply plugin: "com.jfrog.artifactory"
+//	apply plugin: "com.jfrog.artifactory"
 	buildDeb.enabled = false
 
 	ospackage {
