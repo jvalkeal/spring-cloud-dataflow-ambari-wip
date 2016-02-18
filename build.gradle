@@ -42,13 +42,26 @@ configure(subprojects) { subproject ->
 project('hdp') {
 	println 'XXX1'
 	if (tasks.findByPath("artifactoryPublish")) {
+
+		artifactory {
+			publish {
+				repository {
+					ivy {
+						println 'XXX2'
+						artifactLayout = '[organization]/[revision]/[organization]-[module]-[revision].[ext]'
+					}
+				}
+			}
+		}
+
+
 		artifactoryPublish {
-		println 'XXX2'
+		println 'XXX3'
 			properties = ['qa.level': 'basic', 'q.os': 'win32, deb, osx']
 		}
 	}
 //	println tasks.findByPath("artifactoryPublish")?.getProperties()
-	println 'XXX3'
+	println 'XXX4'
 	buildRpm {
 		packageName = 'scdf-plugin-hdp'
 		from("${rootProject.projectDir}/src/main/resources/services") {
