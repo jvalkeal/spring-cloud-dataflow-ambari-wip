@@ -4,50 +4,65 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.netflix.nebula:gradle-ospackage-plugin:2.2.6'
+		classpath 'com.netflix.nebula:gradle-ospackage-plugin:3.4.0'
 	}
 }
 
-apply plugin: 'os-package'
-apply plugin: 'rpm'
-
-buildDeb.enabled = false
-buildRpm.enabled = false
-
-ospackage {
-	version = '1.0'
-	release = 1
-	arch = NOARCH
-	os = LINUX
-	user 'root'
-	permissionGroup = 'root'
-	packageDescription = 'Spring Cloud Dataflow plugin contains Ambari\'s stack definition for Spring Cloud Dataflow service.'
-	packageGroup = 'Applications/Databases'
-	license = 'Apache License v2.0'
-
-	requires('ambari-server', '1.7', GREATER | EQUAL)
-	requires('python', '2.6', GREATER | EQUAL)
-
-	postInstall file('src/main/package/rpm/postinstall.sh')
-	preUninstall file('src/main/package/rpm/preremove.sh')
-
-}
-
-task phd30Rpm(type: Rpm) {
-	packageName = 'scdf-plugin-phd'
-	from('src/main/resources/services') {
-		into '/var/lib/ambari-server/resources/stacks/PHD/3.0/services'
+if (tasks.findByPath("artifactoryPublish")) {
+	artifactory {
+		publish {
+			repository {
+				ivy {
+					artifactLayout = '[organization]/[revision]/[organization]-plugin-[module]-[revision]-1.noarch.[ext]'
+				}
+			}
+		}
 	}
 }
 
-task hdp22Rpm(type: Rpm) {
-	packageName = 'scdf-plugin-hdp'
-	from('src/main/resources/services') {
-		into '/var/lib/ambari-server/resources/stacks/HDP/2.2/services'
+configure(allprojects) {
+	group = 'scdf'
+}
+
+configure(subprojects) { subproject ->
+	apply plugin: 'nebula.ospackage'
+	buildDeb.enabled = false
+
+	ospackage {
+		release = 1
+		arch = NOARCH
+		os = LINUX
+		user 'root'
+		permissionGroup = 'root'
+		packageDescription = 'Spring Cloud Dataflow plugin contains Ambari\'s stack definition for Spring Cloud Dataflow service.'
+		packageGroup = 'Applications/Databases'
+		license = 'Apache License v2.0'
+		requires('ambari-server', '1.7', GREATER | EQUAL)
+		requires('python', '2.6', GREATER | EQUAL)
+		postInstall file("${rootProject.projectDir}/src/main/package/rpm/postinstall.sh")
+		preUninstall file("${rootProject.projectDir}/src/main/package/rpm/preremove.sh")
+	}
+
+	artifacts {
+		archives buildRpm
 	}
 }
 
-task dist {
-	dependsOn phd30Rpm, hdp22Rpm
+project('hdp') {
+	buildRpm {
+		packageName = 'scdf-plugin-hdp'
+		from("${rootProject.projectDir}/src/main/resources/services") {
+			into '/var/lib/ambari-server/resources/stacks/HDP/2.2/services'
+		}
+	}
+}
+
+project('phd') {
+	buildRpm {
+		packageName = 'scdf-plugin-phd'
+		from("${rootProject.projectDir}/src/main/resources/services") {
+			into '/var/lib/ambari-server/resources/stacks/PHD/3.0/services'
+		}
+	}
 }
 
