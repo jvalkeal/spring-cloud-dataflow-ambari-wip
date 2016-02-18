@@ -71,6 +71,29 @@ project('hdp') {
 }
 
 project('phd') {
+
+	println 'XXX5'
+	if (tasks.findByPath("artifactoryPublish")) {
+
+		artifactory {
+			publish {
+				repository {
+					ivy {
+						println 'XXX6'
+						artifactLayout = '[organization]/[revision]/[organization]-[module]-[revision].noarch.[ext]'
+					}
+				}
+			}
+		}
+
+
+		artifactoryPublish {
+		println 'XXX7'
+			properties = ['qa.level': 'basic', 'q.os': 'win32']
+		}
+	}
+	println 'XXX8'
+
 	buildRpm {
 		packageName = 'scdf-plugin-phd'
 		from("${rootProject.projectDir}/src/main/resources/services") {
