@@ -7,7 +7,7 @@ from pprint import pprint
 
 def updateRepoWithScdf(repoinfoxml):
   scdf_repo='SCDF-1.0'
-  scdf_repo_str = '<repo><baseurl>http://repo.spring.io/yum-release/scdf/1.0</baseurl><repoid>' + scdf_repo + '</repoid><reponame>' + scdf_repo + '</reponame></repo>'
+  scdf_repo_str = '<repo><baseurl>http://repo.spring.io/yum-snapshot-local/scdf/1.0</baseurl><repoid>' + scdf_repo + '</repoid><reponame>' + scdf_repo + '</reponame></repo>'
   is_scdfrepo_set = None
 
   tree = ET.parse(repoinfoxml)
