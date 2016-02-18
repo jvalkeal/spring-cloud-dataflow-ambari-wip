@@ -5,7 +5,18 @@ buildscript {
 
 	dependencies {
 		classpath 'com.netflix.nebula:gradle-ospackage-plugin:2.2.6'
-//		classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.0.0"
+	}
+}
+
+if (tasks.findByPath("artifactoryPublish")) {
+	artifactory {
+		publish {
+			repository {
+				ivy {
+					artifactLayout = '[organization]/[revision]/[organization]-plugin-[module]-[revision]-1.noarch.[ext]'
+				}
+			}
+		}
 	}
 }
 
@@ -16,7 +27,6 @@ configure(allprojects) {
 configure(subprojects) { subproject ->
 	apply plugin: 'os-package'
 	apply plugin: 'rpm'
-//	apply plugin: "com.jfrog.artifactory"
 	buildDeb.enabled = false
 
 	ospackage {
@@ -40,28 +50,11 @@ configure(subprojects) { subproject ->
 }
 
 project('hdp') {
-	println 'XXX1'
 	if (tasks.findByPath("artifactoryPublish")) {
-
-		artifactory {
-			publish {
-				repository {
-					ivy {
-						println 'XXX2'
-						artifactLayout = '[organization]/[revision]/[organization]-[module]-[revision].[ext]'
-					}
-				}
-			}
-		}
-
-
 		artifactoryPublish {
-		println 'XXX3'
 			properties = ['qa.level': 'basic', 'q.os': 'win32, deb, osx']
 		}
 	}
-//	println tasks.findByPath("artifactoryPublish")?.getProperties()
-	println 'XXX4'
 	buildRpm {
 		packageName = 'scdf-plugin-hdp'
 		from("${rootProject.projectDir}/src/main/resources/services") {
@@ -71,29 +64,11 @@ project('hdp') {
 }
 
 project('phd') {
-
-	println 'XXX5'
 	if (tasks.findByPath("artifactoryPublish")) {
-
-		artifactory {
-			publish {
-				repository {
-					ivy {
-						println 'XXX6'
-						artifactLayout = '[organization]/[revision]/[organization]-[module]-[revision].noarch.[ext]'
-					}
-				}
-			}
-		}
-
-
 		artifactoryPublish {
-		println 'XXX7'
 			properties = ['qa.level': 'basic', 'q.os': 'win32']
 		}
 	}
-	println 'XXX8'
-
 	buildRpm {
 		packageName = 'scdf-plugin-phd'
 		from("${rootProject.projectDir}/src/main/resources/services") {
