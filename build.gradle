@@ -50,6 +50,8 @@ configure(subprojects) { subproject ->
 		archives file: f, name: f.getName(), type: 'Rpm'
 	}
 
+	build.dependsOn buildRpm
+
 /*
 	artifacts {
 		archives buildRpm
