@@ -8,6 +8,7 @@ buildscript {
 	}
 }
 
+/*
 if (tasks.findByPath("artifactoryPublish")) {
 	artifactory {
 		publish {
@@ -19,6 +20,7 @@ if (tasks.findByPath("artifactoryPublish")) {
 		}
 	}
 }
+*/
 
 configure(allprojects) {
 	group = 'scdf'
@@ -43,9 +45,17 @@ configure(subprojects) { subproject ->
 		preUninstall file("${rootProject.projectDir}/src/main/package/rpm/preremove.sh")
 	}
 
+	def f = file("$group/$version/$group-$version-1.noarch.rpm")
+	artifacts {
+		archives file: f, name: f.getName(), type: 'Rpm'
+	}
+
+/*
 	artifacts {
 		archives buildRpm
 	}
+*/
+
 }
 
 project('hdp') {
