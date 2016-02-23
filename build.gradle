@@ -13,7 +13,7 @@ if (tasks.findByPath("artifactoryPublish")) {
 		publish {
 			repository {
 				ivy {
-					artifactLayout = '[organization]/[revision]/[organization]-plugin-[module]-[revision]-1.[architecture].[ext]'
+					artifactLayout = '[organization]/[revision]/[organization]-plugin-[module]-[revision]-1.noarch.[ext]'
 				}
 			}
 		}
@@ -48,17 +48,6 @@ configure(subprojects) { subproject ->
 		archives buildRpm
 	}
 
-//	if (tasks.findByPath("artifactoryPublish")) {
-		publishing {
-			publications {
-				archives(IvyPublication) {
-					descriptor.withXml {
-						asNode().info[0].attributes().put('e:architecture', 'amd64')
-					}
-				}
-			}
-		}
-//	}
 }
 
 project('hdp') {
