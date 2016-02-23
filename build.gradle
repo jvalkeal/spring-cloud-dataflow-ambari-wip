@@ -48,7 +48,7 @@ configure(subprojects) { subproject ->
 		archives buildRpm
 	}
 
-	if (tasks.findByPath("artifactoryPublish")) {
+//	if (tasks.findByPath("artifactoryPublish")) {
 		publishing {
 			publications {
 				archives(IvyPublication) {
@@ -58,7 +58,7 @@ configure(subprojects) { subproject ->
 				}
 			}
 		}
-	}
+//	}
 }
 
 project('hdp') {
