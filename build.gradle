@@ -13,7 +13,7 @@ if (tasks.findByPath("artifactoryPublish")) {
 		publish {
 			repository {
 				ivy {
-					artifactLayout = '[organization]/[revision]/[organization]-plugin-[module]-[revision]-1.noarch.[ext]'
+					artifactLayout = '[organization]/[revision]/[organization]-plugin-[module]-[revision]-[classifier].[ext]'
 				}
 			}
 		}
@@ -29,7 +29,7 @@ configure(subprojects) { subproject ->
 	buildDeb.enabled = false
 
 	ospackage {
-		release = 1
+		release = "${rootProject.release}"
 		arch = NOARCH
 		os = LINUX
 		user 'root'
@@ -44,7 +44,9 @@ configure(subprojects) { subproject ->
 	}
 
 	artifacts {
-		archives buildRpm
+		archives buildRpm {
+			classifier "${rootProject.release}.x86_64"
+		}
 	}
 }
 
