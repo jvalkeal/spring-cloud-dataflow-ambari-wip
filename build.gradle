@@ -45,7 +45,7 @@ configure(subprojects) { subproject ->
 
 	artifacts {
 		archives buildRpm {
-			classifier "${rootProject.release}.x86_64"
+			classifier "${rootProject.release}.noarch"
 		}
 	}
 }
