@@ -63,7 +63,7 @@
 
       <configuration-dependencies>
         <config-type>scdf-site</config-type>
-        <config-type>scdf-admin-env</config-type>
+        <config-type>scdf-server-env</config-type>
       </configuration-dependencies>
 
       <osSpecifics>
@@ -71,7 +71,7 @@
           <osFamily>any</osFamily>
            <packages>
             <package>
-              <name>spring-cloud-dataflow-admin-yarn</name>
+              <name>spring-cloud-dataflow-server-yarn</name>
             </package>
           </packages>
         </osSpecific>
