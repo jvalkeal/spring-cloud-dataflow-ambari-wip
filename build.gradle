@@ -24,9 +24,19 @@ configure(allprojects) {
 	group = 'scdf'
 }
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 configure(subprojects) { subproject ->
 	apply plugin: 'nebula.ospackage'
 	buildDeb.enabled = false
+
+	task filterRpm(type: Copy) {
+		from "${rootProject.projectDir}/src/main/package/rpm"
+		into "$buildDir/rpm-filtered"
+		filter ReplaceTokens, tokens: [
+			springYumRepoId: "${rootProject.springYumRepoId}".toString()
+		]
+	}
 
 	ospackage {
 		release = "${rootProject.release}"
@@ -39,9 +49,13 @@ configure(subprojects) { subproject ->
 		license = 'Apache License v2.0'
 		requires('ambari-server', '1.7', GREATER | EQUAL)
 		requires('python', '2.6', GREATER | EQUAL)
-		postInstall file("${rootProject.projectDir}/src/main/package/rpm/postinstall.sh")
-		preUninstall file("${rootProject.projectDir}/src/main/package/rpm/preremove.sh")
+//		postInstall file("${rootProject.projectDir}/src/main/package/rpm/postinstall.sh")
+//		preUninstall file("${rootProject.projectDir}/src/main/package/rpm/preremove.sh")
+		postInstall file("$buildDir/rpm-filtered/postinstall.sh")
+		preUninstall file("$buildDir/rpm-filtered/preremove.sh")
 	}
+
+	buildRpm.dependsOn filterRpm
 
 	artifacts {
 		archives buildRpm {
